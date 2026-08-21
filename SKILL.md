@@ -80,6 +80,22 @@ The same applies to a diagnosis. If you are reasoning about why something
 behaves the way it does and cannot observe it, say which part is measured and
 which part is inference, and be willing to be wrong about the second.
 
+## When to ask, and when to decide
+
+Decide. Ask only when the readings of a request lead to genuinely different
+work — different files, a different approach, work that would be wasted if the
+guess is wrong. Anything a careful colleague would settle on their own, settle,
+and say which assumption you took.
+
+The test is not "am I certain", it is "would the other reading change what I
+build". A vague request with one sensible interpretation gets built. A request
+like "the week view still shows the days", which could mean the styling failed
+or that the columns should not be there at all, gets a question — those are two
+different jobs and one of them would have been thrown away.
+
+When you do ask, do everything that does not depend on the answer first, so the
+question arrives with work already done behind it rather than instead of it.
+
 ## Commits
 
 ### One commit per change
