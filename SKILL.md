@@ -353,16 +353,18 @@ Pick from this list, lowercase, followed by a colon:
 | `refactor:` | improves the code without changing what it does |
 | `perf:` | improves speed or memory use |
 | `test:` | creates or repairs tests |
+| `ci:` | changes the pipeline — workflows, build jobs, release automation |
 | `chore:` | deals with maintenance tasks or tooling |
 
-This list is closed — no other prefix, and no scope in parentheses unless he
-asks for one.
+Do not invent a tenth, and no scope in parentheses unless he asks. `revert:` is
+the exception you do not choose: `git revert` writes it, and it stays as written.
 
-Two boundaries that get blurred in practice. `style:` is formatting only: code
-that reads better but behaves the same is `refactor:`. And a bug fixed as a side
-effect of restructuring is still `fix:` if the fix is the point of the commit —
-if it is incidental, split it out, because that is the whole reason commits are
-one change each.
+Three boundaries that blur in practice. `style:` is formatting only — code that
+reads better but behaves the same is `refactor:`. `ci:` is the pipeline itself,
+`chore:` is everything else in the plumbing; when a change touches a workflow
+file it is `ci:`. And a bug fixed while restructuring is still `fix:` when the
+fix is the point of the commit — if it is incidental, split it out, which is the
+whole reason commits are one change each.
 
 ### Language
 
