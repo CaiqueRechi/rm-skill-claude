@@ -1,11 +1,29 @@
 # rm-skill-claude
 
-Minhas convenções de trabalho, como uma skill do Claude Code. Valem para
-**qualquer** projeto meu — não são documentação de um sistema específico.
+Skill do Claude Code com as minhas convenções de trabalho — as decisões que eu
+já tomei e não quero repetir a cada sessão. Valem para qualquer projeto meu, e
+não descrevem sistema nenhum em específico.
 
-É o conjunto de decisões que eu já tomei e não quero repetir a cada sessão:
-design, nomenclatura, banco, comentários, testes, documentação, verificação e o
-padrão de commits.
+**Autor:** Caique Rechi Mehret
+
+## O que ela decide
+
+| Assunto | Regra |
+| --- | --- |
+| Commits | um por alteração, em inglês, com prefixo convencional e sem co-autoria |
+| Push | meu, sempre — o agente para no commit |
+| Testes | tudo testado; no mesmo commit quando é desenvolvimento, separado quando é alteração não-trivial |
+| Documentação | sem ela o trabalho não está pronto |
+| Comentários | só o necessário, e em inglês |
+| Nomes | `camelCase` no código, `PascalCase` em classe, `snake_case` no banco |
+| Migration | sempre reversível, e o `down()` rodado |
+| Design | Clean Code e SOLID, sem abstração para um caso só |
+| Discordância | falar antes de fazer, nunca depois |
+| Hooks | não se pula, nem com `--no-verify` |
+
+O detalhe e o **porquê** de cada uma estão em [SKILL.md](SKILL.md). O porquê é a
+parte que importa: sem ele a letra é cumprida e a intenção se perde no primeiro
+caso que não estava previsto.
 
 ## Instalação
 
@@ -16,27 +34,26 @@ pessoais:
 git clone https://github.com/CaiqueRechi/rm-skill-claude.git ~/.claude/skills/rm-skill-claude
 ```
 
-O nome da pasta tem de bater com o `name:` do frontmatter — os dois são
-`rm-skill-claude`. Se um dia a pasta for renomeada, o frontmatter muda junto,
-senão a skill deixa de carregar sem dar erro nenhum.
+No PowerShell o `~` chega literal no `git.exe` e o clone falha — use `$HOME`:
 
-Depois disso ela aparece na lista de skills disponíveis em qualquer projeto.
+```powershell
+git clone https://github.com/CaiqueRechi/rm-skill-claude.git "$HOME\.claude\skills\rm-skill-claude"
+```
 
-## Estrutura
+O nome da pasta tem de bater com o `name:` do frontmatter. Se um dia mudar, muda
+nos dois: quando divergem, a skill simplesmente não carrega e não dá erro
+nenhum.
 
-- `SKILL.md` — a skill. O frontmatter (`name`, `description`) decide quando ela
-  é carregada; o corpo é lido quando ela dispara.
-- `docs/testing.md` — como a skill foi testada, com resultados e limitações.
+## Verificação
 
-## Editando
+[docs/testing.md](docs/testing.md) registra como a skill foi testada — três
+tarefas executadas duas vezes cada, com a skill e sem, e o que saiu diferente.
+Os resultados e as limitações estão lá com o mesmo peso.
 
-Duas regras para o que entra aqui:
+## O que entra aqui
 
-1. **Tem de ser preferência minha, dita por mim.** Regra deduzida da leitura de
-   um código é palpite, e palpite na skill se propaga para todos os projetos.
-2. **Tem de valer em qualquer projeto.** Detalhe de uma base específica não
-   pertence a esta skill — pertence ao `CLAUDE.md` ou ao `AGENTS.md` daquele
-   repositório.
+Preferência minha, dita por mim, e que valha em qualquer projeto.
 
-Vale escrever o *porquê* de cada regra. Sem ele o modelo cumpre a letra e perde
-a intenção — e quando o caso não é exatamente o previsto, escolhe errado.
+Regra deduzida da leitura de um código é palpite, e palpite aqui se propaga para
+todo projeto que eu abrir. Detalhe de uma base específica não é assunto desta
+skill — é do `CLAUDE.md` ou do `AGENTS.md` daquele repositório.
