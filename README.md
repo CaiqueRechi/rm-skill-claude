@@ -1,12 +1,11 @@
 # rm-skill
 
-Minhas convenções de trabalho para os projetos do Hub Ibiporã, como uma skill do
-Claude Code.
+Minhas convenções de trabalho, como uma skill do Claude Code. Valem para
+**qualquer** projeto meu — não são documentação de um sistema específico.
 
-Não é documentação do sistema: é o conjunto de decisões que eu já tomei e não
-quero repetir a cada sessão — como os commits devem ser divididos e escritos,
-como os comentários de código são feitos, e os padrões de tela e de teste que a
-base já usa.
+É o conjunto de decisões que eu já tomei e não quero repetir a cada sessão. Hoje
+cobre o padrão de commits; vai crescer conforme outras preferências forem sendo
+fixadas.
 
 ## Instalação
 
@@ -26,6 +25,13 @@ Depois disso ela aparece na lista de skills disponíveis em qualquer projeto.
 
 ## Editando
 
-O que entra aqui tem de ser uma preferência **estável e reutilizável**. Detalhe
-que só valeu para uma tarefa não pertence à skill. Vale escrever o *porquê* de
-cada regra: sem ele o modelo cumpre a letra e perde a intenção.
+Duas regras para o que entra aqui:
+
+1. **Tem de ser preferência minha, dita por mim.** Regra deduzida da leitura de
+   um código é palpite, e palpite na skill se propaga para todos os projetos.
+2. **Tem de valer em qualquer projeto.** Detalhe de uma base específica não
+   pertence a esta skill — pertence ao `CLAUDE.md` ou ao `AGENTS.md` daquele
+   repositório.
+
+Vale escrever o *porquê* de cada regra. Sem ele o modelo cumpre a letra e perde
+a intenção — e quando o caso não é exatamente o previsto, escolhe errado.

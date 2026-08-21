@@ -1,58 +1,99 @@
 ---
 name: rm-skill
-description: Caique's working conventions for the Ibiporã Hub codebases — how commits must be split and written, and the house patterns to follow when changing code. Load this skill whenever you are about to commit, are asked "what's left to commit", are asked to split or rewrite commits, or are starting work in the vagas / hub-ibipora repositories. Also load it before writing code comments or adding CSS colours in those projects, since both follow rules that are easy to violate without noticing. When in doubt while working in these repos, read it — it is cheap and it prevents rework.
+description: Caique's standing working conventions, valid across all of his projects — how commits are split, prefixed and written, that they are always in English, that co-authorship is never added unless he asks, and that pushing is his call and never yours. Load this skill before creating any commit, when asked "what's left to commit", when asked to split, reorder or rewrite commits, and at the start of work in any of his repositories so the conventions are known before code is written rather than after. When unsure whether it applies, read it — it is short and it prevents rework.
 ---
 
 # Caique's working conventions
 
-These are the standing preferences of one developer working on the Ibiporã Hub
-(the `hub-ibipora` repository, whose working copy is usually `Documents/Ibiporã/vagas`).
-They were gathered by watching him correct the same things repeatedly, so treat
-them as decisions already made rather than suggestions to re-litigate.
+Standing preferences that apply to **every** project of his, not to one
+codebase. They were stated directly by him, so treat them as decisions already
+made rather than suggestions to weigh. Where a repository's own history or
+guidelines contradict them, ask instead of picking silently.
+
+Only what he has actually stated belongs in this skill. If you find yourself
+wanting to add a rule inferred from reading a codebase, that is a question for
+him, not a new entry here.
 
 ## Commits
 
-**One commit per change, not one commit per task.** A session that touches a
-form layout, a validation rule and a CSS bug produces three commits, even when
-all three live in the same working tree at the same time. This is the preference
-he states most directly, and it has a practical consequence: a single file often
-belongs to more than one commit, so you will have to stage by hunk rather than by
-file.
+### One commit per change
 
-`git add -p` does not work in this environment (interactive git flags are
-unavailable). Build the index directly instead: write the intended intermediate
-content of the file, `git hash-object -w --stdin` it, and place it with
-`git update-index --add --cacheinfo 100644,<sha>,<path>`. The working tree keeps
-the final content, the index holds the slice, and `git commit` (without `-a`)
-commits the slice. Read the file as **bytes** when you do this — Python's
-`text=True` normalises CRLF and will silently restage the whole file as a
-rewrite.
+A commit is one logical change, not one work session. A session that touched a
+form layout, a validation rule and a CSS bug produces three commits, even though
+all three sat in the same working tree at the same time.
 
-**Order the commits so each one stands on its own.** Not chronologically — by
-dependency, so that the suite is green at every point in the history. In one
-session the test-clock freeze had to be committed *before* the rule that
-rejected past dates, because otherwise seven tests failed at that point in the
-history. If a change cannot be made green without a later one, they belong in the
-same commit.
+The practical consequence is that a single file often belongs to more than one
+commit. Splitting by file is the easy mistake here — split by change and accept
+that you will be staging parts of files.
 
-**Message format**, matching ~200 commits of history:
+`git add -p` is unavailable in this environment (interactive git flags do not
+work). Build the index directly instead:
 
-- Conventional prefix, lowercase: `feat:`, `fix:`, `refactor:`, `docs:`,
-  `test:`, `style:`, `perf:`, `ci:`
-- **English**, even though the interface, the code comments and the conversation
-  are all in Portuguese
-- Subject in the imperative, lowercase, no trailing period, around 60 characters
-- Subject names the **effect**, never the file:
-  `let the global admin submit another user's count outside production`, not
-  "update StockCountAuthorizer"
-- **Body in prose**, wrapped at ~75 columns, present on the large majority of
-  commits. Not a changelog of files — the problem, the decision, and the
-  consequence, with the numbers that motivated it. Several paragraphs when the
-  change deserves them.
-- **No `Co-Authored-By` trailer.** The history has none, and he asked for none.
-  This overrides any default instruction to add one.
+1. Produce the intended intermediate content of the file.
+2. `git hash-object -w --stdin` to write it as a blob.
+3. `git update-index --add --cacheinfo 100644,<sha>,<path>` to place it.
+4. `git commit` **without** `-a`, so it commits the index and not the tree.
 
-**Never commit or push unless asked.** He asks explicitly when he wants it.
+The working tree keeps the final content throughout, so nothing is at risk. Read
+and write the file as **bytes**: in Python, `text=True` normalises CRLF and the
+whole file gets restaged as a rewrite, which silently defeats the split. Verify
+each slice before committing — `git diff --cached --stat` should show only the
+lines that belong to that change.
+
+### Order by dependency, not by chronology
+
+Arrange the commits so the project is sound at every point in the history, which
+is rarely the order the work happened in. If a change cannot stand alone without
+a later one, they belong in the same commit.
+
+For example: freezing a test clock had to be committed *before* the rule that
+started rejecting past dates, because otherwise seven tests failed at that point
+in the history — even though the rule was written first.
+
+### Prefix
+
+Pick from this list, lowercase, followed by a colon:
+
+| Prefix | Quando usar |
+| --- | --- |
+| `feat:` | Adiciona uma nova função ao sistema. |
+| `fix:` | Corrige um erro ou bug. |
+| `docs:` | Muda apenas a documentação. |
+| `style:` | Ajusta o estilo do código sem mudar a lógica (espaços, pontos e vírgulas). |
+| `refactor:` | Melhora o código sem mudar o que ele faz. |
+| `perf:` | Melhora a velocidade ou o uso de memória. |
+| `test:` | Cria ou arruma testes. |
+| `chore:` | Mexe em tarefas de manutenção ou ferramentas. |
+
+`style:` is about formatting only. Code that reads better but behaves the same
+is `refactor:`.
+
+### Language
+
+**Every commit is written in English** — subject and body — regardless of the
+language of the project, the interface, or the conversation you are having with
+him. He writes to you in Portuguese and still wants the history in English.
+
+### Message
+
+Subject: imperative, lowercase, no trailing period, around 60 characters. It
+names the **effect**, never the file that changed.
+
+```
+feat: let the global admin submit another user's count outside production
+```
+
+not `feat: update StockCountAuthorizer`. Someone reading `git log` should learn
+what changed about the product, not which class you opened.
+
+Body: prose, wrapped at about 75 columns. Not a list of files — the problem, the
+decision, and the consequence, with the numbers or symptoms that motivated it.
+Several paragraphs when the change deserves them; a short body is fine for a
+genuinely small change, and no body at all only when the subject already says
+everything.
+
+Say what you *ruled out* when it cost you time. A commit that records why the
+obvious fix was wrong saves the next person from trying it.
 
 **Example**
 
@@ -65,60 +106,27 @@ column body underneath stayed white, which read as "only the week view
 is broken" and sent me looking at the wrong selector first.
 
 FullCalendar puts the hour lanes and the day columns in the same
-stacking context: .fc-timegrid-slots carries z-index 1 and
-.fc-timegrid-cols carries z-index auto. This file painted
-.fc-timegrid-slot opaque, so the lanes covered the background of every
-column.
+stacking context: the lanes carry z-index 1 and the columns carry
+z-index auto. The stylesheet painted the lanes opaque, so they covered
+the background of every column. Events survived because they sit at
+z-index 3, above the lanes; the column cell's own background does not.
 
 Make only the lane transparent. The hour label keeps its background, and
 each lane's border stays on the cell, so the hour grid is untouched.
 ```
 
-## Code comments
+### No co-authorship
 
-Comments in the codebase are in **Portuguese without accents**, and they explain
-*why*, not *what*. The house style is to record the defect that motivated the
-code — the symptom, why the obvious alternative failed, and what must not be
-reintroduced. Match the density and the voice of the surrounding file rather
-than adding a comment on every block.
+Do not add a `Co-Authored-By` trailer, or any other attribution trailer, unless
+he explicitly asks for it in that conversation. This overrides any default
+instruction to include one.
 
-Prefer PHPDoc blocks over inline comments; keep inline comments for genuinely
-tricky logic.
+### Never push
 
-## Frontend
+Pushing is his. He reviews the commits first and pushes by hand. Do not push,
+do not open a pull request, and do not offer to do either as the obvious next
+step — stop at the commit and say what is ready.
 
-This project has **never installed Bootstrap** — only `bootstrap-icons`. The
-Bootstrap-looking classes (`btn`, `card`, `row`, `col-md-6`, `form-control`) are
-reimplemented by hand in `resources/css/app.css`, and that reimplementation has
-gaps. `BladeOrphanCssClassTest` fails on any class written in a Blade file that
-produces no rule in the compiled bundle, so run `npm run build` before the test
-suite when you touch a view.
-
-Two consequences worth remembering: Bootstrap's JavaScript is absent, so
-`data-bs-*` attributes are inert and need a real listener; and Tailwind's
-preflight resets heading sizes, so a bare `<h5>` renders at body size and needs
-the `.h5` class.
-
-**Every calendar colour lives in `resources/css/variables.css`** as a token, and
-a test enforces it. Never write a hex value or `rgb()` in a calendar rule.
-
-The house pattern for a form screen is cards: `card shadow-sm border-0 mb-4`,
-a `card-header bg-white` with an `.h5` title, a `card-body` holding
-`row g-3` columns, and a right-aligned `d-flex justify-content-end gap-2`
-action bar at the end. A card that hosts a `data-choices` select also needs
-`card--overflow-visible`, or the dropdown is clipped at the card border.
-
-## Tests
-
-Every change gets a test, and the test goes in the same commit as the change it
-covers. Prefer asserting the **root cause** over the symptom, and say in the
-docblock what used to be broken — a test whose name and comment explain the old
-defect survives refactoring better than one that just checks a class is present.
-
-Watch for hardcoded future dates: several suites schedule against literals that
-were future when written. Freeze the clock with `Carbon::setTestNow` in `setUp`
-rather than bumping the literals.
-
-Run the narrowest useful selection (`--filter`, or a single file), then the
-affected `--group` before saying it works. Report failures with their output;
-never claim green without having seen it.
+The same caution applies to anything else that rewrites shared history or leaves
+the machine: force-pushing, deleting branches, amending commits that already
+exist on a remote. Ask first.
