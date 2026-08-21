@@ -62,8 +62,13 @@ The practical consequence is that a single file often belongs to more than one
 commit. Splitting by file is the easy mistake here — split by change and accept
 that you will be staging parts of files.
 
-`git add -p` is unavailable in this environment (interactive git flags do not
-work). Build the index directly instead:
+The rule cuts both ways, though. One change that genuinely touches twenty files
+— a rename, a signature change, a new rule and the call sites it needs — is
+still one commit. Do not fragment a single change to look thorough; the test is
+whether each piece stands on its own and means something by itself.
+
+Interactive git is usually unavailable in this environment, so `git add -p` is
+not an option. If it does work, use it. Otherwise build the index directly:
 
 1. Produce the intended intermediate content of the file.
 2. `git hash-object -w --stdin` to write it as a blob.
@@ -90,19 +95,25 @@ in the history — even though the rule was written first.
 
 Pick from this list, lowercase, followed by a colon:
 
-| Prefix | Quando usar |
+| Prefix | Use it when the commit |
 | --- | --- |
-| `feat:` | Adiciona uma nova função ao sistema. |
-| `fix:` | Corrige um erro ou bug. |
-| `docs:` | Muda apenas a documentação. |
-| `style:` | Ajusta o estilo do código sem mudar a lógica (espaços, pontos e vírgulas). |
-| `refactor:` | Melhora o código sem mudar o que ele faz. |
-| `perf:` | Melhora a velocidade ou o uso de memória. |
-| `test:` | Cria ou arruma testes. |
-| `chore:` | Mexe em tarefas de manutenção ou ferramentas. |
+| `feat:` | adds a new capability to the system |
+| `fix:` | corrects an error or a bug |
+| `docs:` | changes documentation only |
+| `style:` | adjusts formatting without touching behaviour (whitespace, semicolons) |
+| `refactor:` | improves the code without changing what it does |
+| `perf:` | improves speed or memory use |
+| `test:` | creates or repairs tests |
+| `chore:` | deals with maintenance tasks or tooling |
 
-`style:` is about formatting only. Code that reads better but behaves the same
-is `refactor:`.
+This list is closed — no other prefix, and no scope in parentheses unless he
+asks for one.
+
+Two boundaries that get blurred in practice. `style:` is formatting only: code
+that reads better but behaves the same is `refactor:`. And a bug fixed as a side
+effect of restructuring is still `fix:` if the fix is the point of the commit —
+if it is incidental, split it out, because that is the whole reason commits are
+one change each.
 
 ### Language
 
