@@ -44,6 +44,43 @@ O nome da pasta tem de bater com o `name:` do frontmatter. Se um dia mudar, muda
 nos dois: quando divergem, a skill simplesmente não carrega e não dá erro
 nenhum.
 
+### Instalação por release
+
+As [Releases](https://github.com/CaiqueRechi/rm-skill-claude/releases) oferecem
+um ZIP pronto para instalação e o respectivo checksum SHA-256. Baixe os dois
+arquivos da versão desejada, valide o checksum e extraia o ZIP dentro de
+`~/.claude/skills`. O arquivo já contém a pasta `rm-skill-claude` na raiz.
+
+No Linux:
+
+```bash
+sha256sum -c rm-skill-claude-v1.0.0.zip.sha256
+unzip rm-skill-claude-v1.0.0.zip -d ~/.claude/skills
+```
+
+No PowerShell, compare o resultado abaixo com o valor presente no arquivo
+`.sha256` antes de extrair:
+
+```powershell
+Get-FileHash .\rm-skill-claude-v1.0.0.zip -Algorithm SHA256
+Expand-Archive .\rm-skill-claude-v1.0.0.zip -DestinationPath "$HOME\.claude\skills"
+```
+
+## Releases
+
+A versão a publicar fica em [VERSION](VERSION) e segue versionamento semântico.
+Todo pull request valida a estrutura e a criação do ZIP. Quando uma alteração
+entra na `main` com uma versão ainda não publicada, o workflow cria
+automaticamente:
+
+- a tag `vX.Y.Z`;
+- a Release com notas geradas a partir dos commits;
+- o pacote `rm-skill-claude-vX.Y.Z.zip`;
+- o checksum `rm-skill-claude-vX.Y.Z.zip.sha256`.
+
+Depois de uma versão publicada, a próxima alteração que deva gerar Release
+precisa atualizar o arquivo `VERSION`.
+
 ## Verificação
 
 [docs/testing.md](docs/testing.md) registra como a skill foi testada — três
