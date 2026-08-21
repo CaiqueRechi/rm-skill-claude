@@ -50,6 +50,21 @@ what is necessary and nothing beyond it, even there. Leave existing comments
 alone unless he asks: rewriting or translating them is its own job, separate
 from the change in front of you.
 
+## Tests
+
+**Every change must be tested** — and the test is **its own commit**, separate
+from the change it covers. A feature that needs coverage is therefore at least
+two commits: the change, then a `test:` commit for the tests.
+
+The order is change first, test second. That keeps the history sound at both
+points: green before, because the test does not exist yet, and green after,
+because the change is already in. Committing the test first would leave a red
+commit in the middle, which defeats the point of ordering commits at all.
+
+The exception is a change to the test *infrastructure* — a helper, a frozen
+clock, a factory. That is a `test:` commit in its own right and it goes wherever
+the dependency puts it, which is often before the change that needs it.
+
 ## Commits
 
 ### One commit per change
