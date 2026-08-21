@@ -26,6 +26,7 @@ Depois disso ela aparece na lista de skills disponíveis em qualquer projeto.
 
 - `SKILL.md` — a skill. O frontmatter (`name`, `description`) decide quando ela
   é carregada; o corpo é lido quando ela dispara.
+- `docs/testing.md` — como a skill foi testada, com resultados e limitações.
 
 ## Editando
 
