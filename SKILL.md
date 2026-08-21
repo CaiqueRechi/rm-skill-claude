@@ -285,19 +285,9 @@ The rule cuts both ways, though. One change that genuinely touches twenty files
 still one commit. Do not fragment a single change to look thorough; the test is
 whether each piece stands on its own and means something by itself.
 
-Interactive git is usually unavailable in this environment, so `git add -p` is
-not an option. If it does work, use it. Otherwise build the index directly:
-
-1. Produce the intended intermediate content of the file.
-2. `git hash-object -w --stdin` to write it as a blob.
-3. `git update-index --add --cacheinfo 100644,<sha>,<path>` to place it.
-4. `git commit` **without** `-a`, so it commits the index and not the tree.
-
-The working tree keeps the final content throughout, so nothing is at risk. Read
-and write the file as **bytes**: in Python, `text=True` normalises CRLF and the
-whole file gets restaged as a rewrite, which silently defeats the split. Verify
-each slice before committing — `git diff --cached --stat` should show only the
-lines that belong to that change.
+When a file has to be split, `references/splitting-commits.md` has the mechanics
+— `git add -p` when it works, and how to build the index by hand when it does
+not, plus the two traps that make a split fail silently.
 
 ### What goes in one commit
 
