@@ -14,6 +14,40 @@ Only what he has actually stated belongs in this skill. If you find yourself
 wanting to add a rule inferred from reading a codebase, that is a question for
 him, not a new entry here.
 
+## Design
+
+Clean Code and SOLID are the standing bar, in every project. Both names are
+broad enough to be agreed with and then ignored, so what follows is what they
+buy in practice — the things whose absence he would notice.
+
+**One reason to change per unit.** A function does one thing and its name says
+which. A class with two reasons to change is two classes. A boolean parameter
+that makes a function behave two different ways is two functions.
+
+**Name by intent, not by type or mechanism.** `isRegisteredForDiscounts`, not
+`discount()`. `WarehouseNormalizer`, not `StringHelper`. Avoid abbreviations —
+the reader is never the person who just wrote it.
+
+**Depend on abstractions, and inject them.** Take a collaborator through the
+constructor instead of reaching for a global, a facade or a singleton in the
+middle of a method. That is the difference between a unit you can test and one
+you can only run.
+
+**Guard clauses over nesting.** Handle the exceptional case and return early;
+keep the happy path at the left margin.
+
+**Do not build abstraction for a single case.** This is where SOLID gets
+misapplied most: an interface per class, a factory with one implementation, a
+strategy pattern for two branches. Two similar things are not duplication until
+the third one shows up. Open/closed pays off when the axis of change is known,
+not when it is imagined.
+
+**Apply this to code you write.** Code you are only passing through gets
+*proposed*, not restructured. An unrelated refactor buried inside a feature is
+precisely what one-commit-per-change exists to prevent — if the cleanup is worth
+doing it is worth its own `refactor:` commit, and worth saying so before doing
+it.
+
 ## Code comments
 
 Write a comment only when it is genuinely necessary, and write it in **English**
