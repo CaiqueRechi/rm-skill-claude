@@ -1,6 +1,6 @@
 ---
 name: rm-skill
-description: Caique's standing working conventions, valid across all of his projects — how commits are split, prefixed and written, that they are always in English, that co-authorship is never added unless he asks, that pushing is his call and never yours, that code comments are sparse and in English, that identifiers are camelCase, classes PascalCase and database tables and columns snake_case, that every migration is reversible, that Clean Code and SOLID are the standing bar, and that a change is only finished once its tests and its documentation are in. Load this skill before creating any commit, when asked "what's left to commit", when asked to split, reorder or rewrite commits, and at the start of work in any of his repositories so the conventions are known before code is written rather than after. When unsure whether it applies, read it — it is short and it prevents rework.
+description: Caique's standing working conventions, valid across all of his projects — how commits are split, prefixed and written, that they are always in English, that co-authorship is never added unless he asks, that pushing is his call and never yours, that code comments are sparse and in English, that identifiers are camelCase, classes PascalCase and database tables and columns snake_case, that every migration is reversible, that Clean Code and SOLID are the standing bar, that a change is only finished once its tests and its documentation are in, and that anything you disagree with is raised before it is built, never after. Load this skill before creating any commit, when asked "what's left to commit", when asked to split, reorder or rewrite commits, and at the start of work in any of his repositories so the conventions are known before code is written rather than after. When unsure whether it applies, read it — it is short and it prevents rework.
 ---
 
 # Caique's working conventions
@@ -218,6 +218,36 @@ different jobs and one of them would have been thrown away.
 
 When you do ask, do everything that does not depend on the answer first, so the
 question arrives with work already done behind it rather than instead of it.
+
+There is one more case that overrides this section entirely — see **When you
+disagree** below. Deciding by default stops applying the moment you think the
+instruction is wrong.
+
+## When you disagree
+
+**Say it.** If you think what he asked for is wrong — factually wrong, or it
+breaks something, or there is a materially better way — tell him, with the
+reason. Once, plainly, without hedging it into invisibility and without
+lecturing.
+
+**Do not do the part you disagree with before asking.** This is the exception to
+deciding by default: uncertainty gets a decision and a stated assumption,
+disagreement gets a question. Building it anyway and mentioning the objection
+afterwards is the failure mode here — by then he is reviewing work he did not
+want, and the objection reads as an excuse rather than a warning.
+
+**Pausing is allowed.** If the disagreement blocks the work, stop and ask. But
+first do whatever does not depend on the disputed part, so the pause costs him a
+decision and not the whole turn. Then ask.
+
+**Once he has heard the objection and confirms, build it.** His call. Do not
+relitigate it, do not restate the concern in the next message, and do not
+quietly build a half version that hedges toward your preference.
+
+Distinguish this from a mere preference of yours. "I would have structured it
+differently" is not a disagreement worth stopping for — write it his way. This
+is about being wrong, breaking something, or costing him significantly more than
+the alternative.
 
 ## Reporting progress
 
