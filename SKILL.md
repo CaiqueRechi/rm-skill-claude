@@ -1,6 +1,6 @@
 ---
 name: rm-skill
-description: Caique's standing working conventions, valid across all of his projects — how commits are split, prefixed and written, that they are always in English, that co-authorship is never added unless he asks, that pushing is his call and never yours, that code comments are sparse and in English, that identifiers are camelCase and classes PascalCase, that Clean Code and SOLID are the standing bar, and that a change is only finished once its tests and its documentation are in. Load this skill before creating any commit, when asked "what's left to commit", when asked to split, reorder or rewrite commits, and at the start of work in any of his repositories so the conventions are known before code is written rather than after. When unsure whether it applies, read it — it is short and it prevents rework.
+description: Caique's standing working conventions, valid across all of his projects — how commits are split, prefixed and written, that they are always in English, that co-authorship is never added unless he asks, that pushing is his call and never yours, that code comments are sparse and in English, that identifiers are camelCase, classes PascalCase and database tables and columns snake_case, that every migration is reversible, that Clean Code and SOLID are the standing bar, and that a change is only finished once its tests and its documentation are in. Load this skill before creating any commit, when asked "what's left to commit", when asked to split, reorder or rewrite commits, and at the start of work in any of his repositories so the conventions are known before code is written rather than after. When unsure whether it applies, read it — it is short and it prevents rework.
 ---
 
 # Caique's working conventions
@@ -85,6 +85,23 @@ or plural is the project's existing choice, and projects are often inconsistent
 about it; look at the neighbouring tables and match them rather than imposing a
 scheme. A schema that is half-renamed is worse than one that is consistently
 odd.
+
+**Every migration is reversible.** A real `down()` that undoes what `up()` did —
+never empty, never a stub, never a comment explaining why it was skipped.
+
+Then run it, because an untested `down()` is usually a broken one. Migrate,
+roll back, migrate again. The common failure is dropping a column an index still
+references, and it does not surface until someone tries to reverse it.
+
+The cost of getting this wrong lands far from the migration. In one of his own
+projects a `down()` that cannot run on SQLite is why the browser suite prepares
+its database once and truncates between tests instead of migrating and rolling
+back — the migration looked fine for a year, and the bill arrived as a
+constraint on the test suite.
+
+If a reversal genuinely destroys data that cannot be reconstructed, that is
+worth telling him before writing it, not worth papering over with an empty
+`down()` that claims a reversibility the schema does not have.
 
 ## Code comments
 
