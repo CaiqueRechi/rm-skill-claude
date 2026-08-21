@@ -1,24 +1,24 @@
-# rm-skill
+# rm-skill-claude
 
 Minhas convenções de trabalho, como uma skill do Claude Code. Valem para
 **qualquer** projeto meu — não são documentação de um sistema específico.
 
-É o conjunto de decisões que eu já tomei e não quero repetir a cada sessão. Hoje
-cobre o padrão de commits; vai crescer conforme outras preferências forem sendo
-fixadas.
+É o conjunto de decisões que eu já tomei e não quero repetir a cada sessão:
+design, nomenclatura, banco, comentários, testes, documentação, verificação e o
+padrão de commits.
 
 ## Instalação
 
-A skill é reconhecida quando fica em `~/.claude/skills/rm-skill`. Como este
-repositório é a própria pasta, basta cloná-lo lá — **informando o destino**:
+Clonar dentro de `~/.claude/skills`, que é onde o Claude Code procura skills
+pessoais:
 
 ```bash
-git clone https://github.com/CaiqueRechi/rm-skill-claude.git ~/.claude/skills/rm-skill
+git clone https://github.com/CaiqueRechi/rm-skill-claude.git ~/.claude/skills/rm-skill-claude
 ```
 
-O destino explícito não é detalhe: o repositório se chama `rm-skill-claude` e um
-`git clone` sem destino criaria uma pasta com esse nome, que não corresponde ao
-`name: rm-skill` do frontmatter.
+O nome da pasta tem de bater com o `name:` do frontmatter — os dois são
+`rm-skill-claude`. Se um dia a pasta for renomeada, o frontmatter muda junto,
+senão a skill deixa de carregar sem dar erro nenhum.
 
 Depois disso ela aparece na lista de skills disponíveis em qualquer projeto.
 

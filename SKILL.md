@@ -1,5 +1,5 @@
 ---
-name: rm-skill
+name: rm-skill-claude
 description: Caique's standing working conventions, valid across every project of his — sparse code comments in English, camelCase identifiers and a snake_case schema, Clean Code and SOLID, reversible migrations, one commit per change written in English with no co-authorship, tests and documentation bundled with new development but split out of a non-trivial alteration, disagreements raised before anything is built, and pushing left to him. Load it before writing code or creating any commit in any of his repositories, when asked what is left to commit, and when asked to split, reorder or rewrite commits. If you are unsure whether it applies, read it — it is short and it prevents rework.
 ---
 
