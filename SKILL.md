@@ -56,22 +56,35 @@ it.
 This is already what PHP (PSR-12) and JavaScript/TypeScript expect, which is
 where most of his code lives, so in those projects it is simply the rule.
 
-Two situations are not naming choices, and treating them as ones breaks
-something real:
+**A name that arrives from somewhere else keeps the spelling it arrives with.**
+This is his rule too, not an exception to it. Database columns, request fields,
+config keys, a payload from an external API, a third-party library's methods —
+you do not get to rename what you do not own, and quietly "correcting" one of
+them is a contract change dressed up as a style fix. `cost_center_id` stays
+`cost_center_id`.
 
-**Keys that cross a boundary keep the boundary's spelling.** Database columns,
-request fields, config keys, payloads from an external API. In Laravel those are
-snake_case by convention — `cost_center_id`, `start_at` — and changing one is a
-migration or a contract change, not a rename. The camelCase rule governs
-identifiers in code, not data keys.
+So the camelCase rule governs identifiers you declare, not data keys you
+receive. See **Database** below for the schema side.
 
-**A language whose own convention is the opposite.** Python and Rust use
-snake_case, enforced by their formatters and linters. Applying camelCase there
-fights the tooling on every commit. That is a conflict to raise with him, not to
-resolve silently in either direction.
+The one case still worth raising with him: a language whose own convention is
+the opposite — Python and Rust use snake_case, enforced by their formatters — so
+camelCase there fights the tooling on every commit. Ask rather than resolving it
+silently in either direction.
 
 Existing code written to another convention is left as it is unless he asks for
 a rename. New code follows the rule.
+
+## Database
+
+**Tables and columns are `snake_case`.** Always, including a column you are
+adding to a table that got it wrong before — one inconsistent name is cheaper
+than a rename.
+
+Do not extend this into pluralisation or prefixes. Whether tables are singular
+or plural is the project's existing choice, and projects are often inconsistent
+about it; look at the neighbouring tables and match them rather than imposing a
+scheme. A schema that is half-renamed is worse than one that is consistently
+odd.
 
 ## Code comments
 
