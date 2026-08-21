@@ -1,6 +1,6 @@
 ---
 name: rm-skill
-description: Caique's standing working conventions, valid across all of his projects — how commits are split, prefixed and written, that they are always in English, that co-authorship is never added unless he asks, that pushing is his call and never yours, and that code comments are sparse and in English. Load this skill before creating any commit, when asked "what's left to commit", when asked to split, reorder or rewrite commits, and at the start of work in any of his repositories so the conventions are known before code is written rather than after. When unsure whether it applies, read it — it is short and it prevents rework.
+description: Caique's standing working conventions, valid across all of his projects — how commits are split, prefixed and written, that they are always in English, that co-authorship is never added unless he asks, that pushing is his call and never yours, that code comments are sparse and in English, and that a change is only finished once its tests and its documentation are in. Load this skill before creating any commit, when asked "what's left to commit", when asked to split, reorder or rewrite commits, and at the start of work in any of his repositories so the conventions are known before code is written rather than after. When unsure whether it applies, read it — it is short and it prevents rework.
 ---
 
 # Caique's working conventions
@@ -64,6 +64,40 @@ commit in the middle, which defeats the point of ordering commits at all.
 The exception is a change to the test *infrastructure* — a helper, a frozen
 clock, a factory. That is a `test:` commit in its own right and it goes wherever
 the dependency puts it, which is often before the change that needs it.
+
+## Documentation
+
+Every piece of development carries its own documentation, and **the work is not
+complete until the documentation is**. Treat an undocumented change the way you
+would treat an untested one: not done yet, whatever the code looks like.
+
+When something changes, the documentation that describes it changes with it. This
+is the half that rots, and it rots quietly — nobody notices a stale page until
+somebody trusts it. If a change makes an existing page wrong, fixing that page is
+part of the change, not a follow-up.
+
+**Follow the project's standard when it has one.** Look before writing: a `docs/`
+directory, architecture decision records, a README section, docblocks, a wiki.
+Match its location, structure, depth and voice, even where you would have chosen
+differently — consistency is worth more here than your preference.
+
+**Choose one when the project has none.** Pick a form that fits the project's
+size and stack, apply it consistently, and say which form you chose and why, so
+he can correct it once instead of watching it drift.
+
+Complete means someone who was not in the conversation can act on it: what the
+thing does, how to use it, the decisions that are not visible in the code, and
+what goes wrong if it is used incorrectly. A page that narrates the diff is not
+documentation — the diff already exists.
+
+Documentation is its own commit, `docs:`, on the same reasoning that tests get
+theirs. It lands last, once the change and its tests are in.
+
+Note that this reverses the common instruction to avoid creating documentation
+unless asked. Some repositories say exactly that in their own agent guidelines.
+His standing preference is the opposite, so write the documentation — and tell
+him when a repository's guidelines contradict this, because the guidelines are
+his to fix.
 
 ## Before saying it works
 
