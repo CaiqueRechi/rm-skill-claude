@@ -1,6 +1,6 @@
 ---
 name: rm-skill
-description: Caique's standing working conventions, valid across every project of his — sparse code comments in English, camelCase identifiers and a snake_case schema, Clean Code and SOLID, reversible migrations, one commit per change written in English with no co-authorship, tests and documentation each in a commit of their own, disagreements raised before anything is built, and pushing left to him. Load it before writing code or creating any commit in any of his repositories, when asked what is left to commit, and when asked to split, reorder or rewrite commits. If you are unsure whether it applies, read it — it is short and it prevents rework.
+description: Caique's standing working conventions, valid across every project of his — sparse code comments in English, camelCase identifiers and a snake_case schema, Clean Code and SOLID, reversible migrations, one commit per change written in English with no co-authorship, tests and documentation bundled with new development but split out of a non-trivial alteration, disagreements raised before anything is built, and pushing left to him. Load it before writing code or creating any commit in any of his repositories, when asked what is left to commit, and when asked to split, reorder or rewrite commits. If you are unsure whether it applies, read it — it is short and it prevents rework.
 ---
 
 # Caique's working conventions
@@ -141,18 +141,16 @@ from the change in front of you.
 
 ## Tests
 
-**Every change must be tested** — and the test is **its own commit**, separate
-from the change it covers. A feature that needs coverage is therefore at least
-two commits: the change, then a `test:` commit for the tests.
+**Everything is tested** — new development and alterations alike. Untested is not
+finished, on the same footing as undocumented.
 
-The order is change first, test second. That keeps the history sound at both
-points: green before, because the test does not exist yet, and green after,
-because the change is already in. Committing the test first would leave a red
-commit in the middle, which defeats the point of ordering commits at all.
+Whether those tests ride in the change's own commit or get one of their own is a
+question of granularity, answered under **What goes in one commit** below.
 
-The exception is a change to the test *infrastructure* — a helper, a frozen
-clock, a factory. That is a `test:` commit in its own right and it goes wherever
-the dependency puts it, which is often before the change that needs it.
+One case sits outside that table: a change to the test *infrastructure* — a
+helper, a shared factory, a frozen clock. That is a `test:` commit in its own
+right, and it goes wherever the dependency puts it, which is often before the
+change that needs it.
 
 ## Documentation
 
@@ -178,6 +176,9 @@ Complete means someone who was not in the conversation can act on it: what the
 thing does, how to use it, the decisions that are not visible in the code, and
 what goes wrong if it is used incorrectly. A page that narrates the diff is not
 documentation — the diff already exists.
+
+Whether the documentation shares the change's commit or gets its own is decided
+under **What goes in one commit** below.
 
 Documentation is its own commit, `docs:`, on the same reasoning that tests get
 theirs. It lands last, once the change and its tests are in.
@@ -297,6 +298,44 @@ and write the file as **bytes**: in Python, `text=True` normalises CRLF and the
 whole file gets restaged as a rewrite, which silently defeats the split. Verify
 each slice before committing — `git diff --cached --stat` should show only the
 lines that belong to that change.
+
+### What goes in one commit
+
+Tests and documentation are not automatically separate commits. It depends on
+whether you are building something new or changing something that already
+exists:
+
+| The work is | Commits |
+| --- | --- |
+| new development | one commit — the code, its tests and its documentation together |
+| a trivial alteration | one commit, the same way |
+| a non-trivial alteration | separate: the change, then its tests, then its documentation |
+| a test for code that already exists | its own commit, always |
+
+The reasoning behind the split. New development arrives as a whole and is
+reviewed as a whole, so dividing it buys nothing — nobody wants the commit where
+the feature exists untested. An alteration is the opposite: the change itself is
+what gets scrutinised, and pulling its tests and its pages out keeps that diff
+readable.
+
+The last row stands on its own for a different reason. A test written for code
+that was already there is not part of any change — it is a contribution in its
+own right, whatever its size, so it gets its own commit even when nothing else is
+happening.
+
+**Trivial** means the change cannot surprise anyone: a string, a label, a
+constant, a formatting fix. Nothing that alters behaviour, and nothing whose
+blast radius you had to think about — if you had to work out what else it
+touches, it was not trivial.
+
+None of this licenses bundling. "Everything together" means one development with
+its tests and its documentation, not two developments sharing a commit; the rule
+above still holds.
+
+When they are separate, the order is change → tests → documentation. That keeps
+the history sound at each point: green before the test exists, green after the
+change is in. Committing a test ahead of the code it covers parks a red commit in
+the middle, which is the thing ordering commits is meant to avoid.
 
 ### Order by dependency, not by chronology
 
