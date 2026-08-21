@@ -1,6 +1,6 @@
 ---
 name: rm-skill
-description: Caique's standing working conventions, valid across all of his projects — how commits are split, prefixed and written, that they are always in English, that co-authorship is never added unless he asks, that pushing is his call and never yours, that code comments are sparse and in English, and that a change is only finished once its tests and its documentation are in. Load this skill before creating any commit, when asked "what's left to commit", when asked to split, reorder or rewrite commits, and at the start of work in any of his repositories so the conventions are known before code is written rather than after. When unsure whether it applies, read it — it is short and it prevents rework.
+description: Caique's standing working conventions, valid across all of his projects — how commits are split, prefixed and written, that they are always in English, that co-authorship is never added unless he asks, that pushing is his call and never yours, that code comments are sparse and in English, that identifiers are camelCase and classes PascalCase, that Clean Code and SOLID are the standing bar, and that a change is only finished once its tests and its documentation are in. Load this skill before creating any commit, when asked "what's left to commit", when asked to split, reorder or rewrite commits, and at the start of work in any of his repositories so the conventions are known before code is written rather than after. When unsure whether it applies, read it — it is short and it prevents rework.
 ---
 
 # Caique's working conventions
@@ -47,6 +47,31 @@ not when it is imagined.
 precisely what one-commit-per-change exists to prevent — if the cleanup is worth
 doing it is worth its own `refactor:` commit, and worth saying so before doing
 it.
+
+## Naming
+
+- variables, properties, parameters and methods: `camelCase`
+- classes, interfaces, enums, traits and types: `PascalCase`
+
+This is already what PHP (PSR-12) and JavaScript/TypeScript expect, which is
+where most of his code lives, so in those projects it is simply the rule.
+
+Two situations are not naming choices, and treating them as ones breaks
+something real:
+
+**Keys that cross a boundary keep the boundary's spelling.** Database columns,
+request fields, config keys, payloads from an external API. In Laravel those are
+snake_case by convention — `cost_center_id`, `start_at` — and changing one is a
+migration or a contract change, not a rename. The camelCase rule governs
+identifiers in code, not data keys.
+
+**A language whose own convention is the opposite.** Python and Rust use
+snake_case, enforced by their formatters and linters. Applying camelCase there
+fights the tooling on every commit. That is a conflict to raise with him, not to
+resolve silently in either direction.
+
+Existing code written to another convention is left as it is unless he asks for
+a rename. New code follows the rule.
 
 ## Code comments
 
