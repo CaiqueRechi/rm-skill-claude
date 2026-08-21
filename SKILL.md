@@ -65,6 +65,21 @@ The exception is a change to the test *infrastructure* — a helper, a frozen
 clock, a factory. That is a `test:` commit in its own right and it goes wherever
 the dependency puts it, which is often before the change that needs it.
 
+## Before saying it works
+
+Run the tests the change affects, and show him the result. Not the whole suite
+every time — the narrowest useful selection, then the affected group or file.
+
+The rule behind it: never state that something works without having seen it
+pass. If you could not run the tests — no environment, a missing dependency, a
+browser that would not start — say that plainly instead of quietly assuming.
+"I could not verify this" is useful to him; a confident claim that turns out to
+be wrong costs him a round trip and some trust.
+
+The same applies to a diagnosis. If you are reasoning about why something
+behaves the way it does and cannot observe it, say which part is measured and
+which part is inference, and be willing to be wrong about the second.
+
 ## Commits
 
 ### One commit per change
