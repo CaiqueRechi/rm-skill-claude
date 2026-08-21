@@ -302,8 +302,29 @@ lines that belong to that change.
 ### What goes in one commit
 
 Tests and documentation are not automatically separate commits. It depends on
-whether you are building something new or changing something that already
-exists:
+whether the work is development or an alteration, and his rule for that is short:
+
+> **adding a new capability is development. Changing the way something already
+> works is an alteration.**
+
+Note what it is *not* about: whether the file already existed. When you are
+unsure, the operational form of his rule is — once this lands, does anything that
+already worked work differently? Yes is an alteration. No is development.
+
+His two calibration cases, which is where the file test visibly fails:
+
+- a **new method on an existing class** is *development*. The class gains a
+  capability, nothing that was already there behaves differently, and no caller
+  is affected until it chooses to call it.
+- a **new field on an existing form** is an *alteration*. The form already did
+  its job, and now it renders, validates and stores something else — behaviour
+  that existed has moved.
+
+Both are "something new inside something that already exists", and they land on
+opposite sides — which is what makes the file a useless signal here.
+
+By the same test a bug fix is almost always an alteration, and so are adding a
+parameter to an existing method and adding a column to an existing table.
 
 | The work is | Commits |
 | --- | --- |
