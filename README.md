@@ -10,11 +10,15 @@ fixadas.
 ## Instalação
 
 A skill é reconhecida quando fica em `~/.claude/skills/rm-skill`. Como este
-repositório é a própria pasta, basta cloná-lo lá:
+repositório é a própria pasta, basta cloná-lo lá — **informando o destino**:
 
 ```bash
-git clone <url> ~/.claude/skills/rm-skill
+git clone https://github.com/CaiqueRechi/rm-skill-claude.git ~/.claude/skills/rm-skill
 ```
+
+O destino explícito não é detalhe: o repositório se chama `rm-skill-claude` e um
+`git clone` sem destino criaria uma pasta com esse nome, que não corresponde ao
+`name: rm-skill` do frontmatter.
 
 Depois disso ela aparece na lista de skills disponíveis em qualquer projeto.
 
