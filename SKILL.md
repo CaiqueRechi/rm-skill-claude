@@ -274,16 +274,12 @@ are genuinely separate, not a template to fill.
 
 A commit is one logical change, not one work session. A session that touched a
 form layout, a validation rule and a CSS bug produces three commits, even though
-all three sat in the same working tree at the same time.
+all three sat in the same working tree at once.
 
-The practical consequence is that a single file often belongs to more than one
-commit. Splitting by file is the easy mistake here — split by change and accept
-that you will be staging parts of files.
-
-The rule cuts both ways, though. One change that genuinely touches twenty files
-— a rename, a signature change, a new rule and the call sites it needs — is
-still one commit. Do not fragment a single change to look thorough; the test is
-whether each piece stands on its own and means something by itself.
+So a single file often belongs to more than one commit — splitting by file is the
+easy mistake. And the rule cuts both ways: one change that genuinely touches
+twenty files is still one commit. The test in both directions is whether each
+piece stands on its own and means something by itself.
 
 When a file has to be split, `references/splitting-commits.md` has the mechanics
 — `git add -p` when it works, and how to build the index by hand when it does
@@ -297,24 +293,17 @@ whether the work is development or an alteration, and his rule for that is short
 > **adding a new capability is development. Changing the way something already
 > works is an alteration.**
 
-Note what it is *not* about: whether the file already existed. When you are
-unsure, the operational form of his rule is — once this lands, does anything that
-already worked work differently? Yes is an alteration. No is development.
+When unsure, use the operational form: once this lands, does anything that
+already worked work differently? Yes is an alteration, no is development.
 
-His two calibration cases, which is where the file test visibly fails:
-
-- a **new method on an existing class** is *development*. The class gains a
-  capability, nothing that was already there behaves differently, and no caller
-  is affected until it chooses to call it.
-- a **new field on an existing form** is an *alteration*. The form already did
-  its job, and now it renders, validates and stores something else — behaviour
-  that existed has moved.
-
-Both are "something new inside something that already exists", and they land on
-opposite sides — which is what makes the file a useless signal here.
-
-By the same test a bug fix is almost always an alteration, and so are adding a
-parameter to an existing method and adding a column to an existing table.
+His two calibration cases are worth memorising, because they show that *whether
+the file already existed carries no information*. A **new method on an existing
+class** is development — the class gains a capability and nothing already there
+behaves differently. A **new field on an existing form** is an alteration — the
+form already did its job and now renders, validates and stores something else.
+Both are "something new inside something that exists"; they land on opposite
+sides. By the same test, a bug fix, a new parameter and a new column are all
+alterations.
 
 | The work is | Commits |
 | --- | --- |
@@ -323,30 +312,23 @@ parameter to an existing method and adding a column to an existing table.
 | a non-trivial alteration | separate: the change, then its tests, then its documentation |
 | a test for code that already exists | its own commit, always |
 
-The reasoning behind the split. New development arrives as a whole and is
-reviewed as a whole, so dividing it buys nothing — nobody wants the commit where
-the feature exists untested. An alteration is the opposite: the change itself is
-what gets scrutinised, and pulling its tests and its pages out keeps that diff
-readable.
+Why the split falls that way: new development is reviewed as a whole, so
+dividing it only buys a commit where the feature exists untested, which nobody
+wants. An alteration inverts it — the change itself is what gets scrutinised, so
+lifting its tests and its pages out is what keeps that diff readable. The last
+row is separate for a different reason: a test for code that was already there
+belongs to no change, so it stands alone whatever its size.
 
-The last row stands on its own for a different reason. A test written for code
-that was already there is not part of any change — it is a contribution in its
-own right, whatever its size, so it gets its own commit even when nothing else is
-happening.
-
-**Trivial** means the change cannot surprise anyone: a string, a label, a
+**Trivial** means the change cannot surprise anyone — a string, a label, a
 constant, a formatting fix. Nothing that alters behaviour, and nothing whose
-blast radius you had to think about — if you had to work out what else it
-touches, it was not trivial.
+blast radius you had to work out; if you had to, it was not trivial.
 
-None of this licenses bundling. "Everything together" means one development with
-its tests and its documentation, not two developments sharing a commit; the rule
-above still holds.
+Bundling is not licensed by any of this: "everything together" means one
+development with its tests, not two developments sharing a commit.
 
-When they are separate, the order is change → tests → documentation. That keeps
-the history sound at each point: green before the test exists, green after the
-change is in. Committing a test ahead of the code it covers parks a red commit in
-the middle, which is the thing ordering commits is meant to avoid.
+When separate, the order is change → tests → documentation, which keeps the
+history sound at each point — green before the test exists, green after the
+change is in. A test committed ahead of its code parks a red commit mid-history.
 
 ### Order by dependency, not by chronology
 
@@ -400,16 +382,11 @@ feat: let the global admin submit another user's count outside production
 not `feat: update StockCountAuthorizer`. Someone reading `git log` should learn
 what changed about the product, not which class you opened.
 
-Body: prose, wrapped at about 75 columns. Not a list of files — the problem, the
-decision, and the consequence, with the numbers or symptoms that motivated it.
-Several paragraphs when the change deserves them; a short body is fine for a
-genuinely small change, and no body at all only when the subject already says
-everything.
-
-Say what you *ruled out* when it cost you time. A commit that records why the
-obvious fix was wrong saves the next person from trying it.
-
-**Example**
+Body: prose at about 75 columns — the problem, the decision, the consequence,
+with the numbers or symptoms that motivated it. Never a list of files. Length
+follows the change; no body at all only when the subject already says everything.
+Say what you *ruled out* when it cost you time, so the next person does not try
+it. The example below is the shape:
 
 ```
 fix: let the day column colour through in the calendar week view
@@ -431,26 +408,23 @@ each lane's border stays on the cell, so the hour grid is untouched.
 
 ### Do not skip the hooks
 
-No `--no-verify`, and no `--no-gpg-sign` or equivalent, unless he asks for it in
-that conversation. The hooks are the project's own gate — a formatter, a linter,
-a test run, a commit message check — and bypassing one commits something the
-project would have refused.
+No `--no-verify`, no `--no-gpg-sign`, no equivalent, unless he asks in that
+conversation. The hooks are the project's gate — formatter, linter, test run,
+message check — so bypassing one commits what the project would have refused.
 
-This needs saying because the flag gets reached for by reflex, to avoid being
-blocked in the middle of a sequence of commits. That is exactly when it does the
-most damage: whatever the hook would have caught is now buried mid-series, and it
-resurfaces in CI or in review, where unpicking it costs far more than fixing it
-on the spot would have.
+The flag gets reached for by reflex, to avoid being blocked partway through a
+sequence of commits, and that is exactly when it costs most: what the hook would
+have caught ends up buried mid-series and resurfaces in CI or review, where
+unpicking it is far dearer than fixing it on the spot.
 
-When a hook fails, fix what it is complaining about. If the hook itself looks
-broken, or is failing for a reason unrelated to your change, say so and ask —
-that is a disagreement, and it follows the rule for disagreements.
+When a hook fails, fix the complaint. If the hook itself looks broken, or fails
+for a reason unrelated to your change, raise it — that is a disagreement and
+follows that rule.
 
-The same reasoning covers the rest of the family whenever the motive is to keep
-your own work moving rather than to solve the problem: skipping a test, silencing
-a linter, `--force` on anything, quieting a type checker. And if you do end up
-bypassing a gate, say that you did. A bypass he does not know about is worse than
-the failure it hid.
+Same reasoning wherever the motive is to keep your own work moving rather than
+solve the problem: skipping a test, silencing a linter, `--force`, quieting a
+type checker. And if you do bypass a gate, say so — a bypass he does not know
+about is worse than the failure it hid.
 
 ### No co-authorship
 
