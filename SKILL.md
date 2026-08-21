@@ -219,6 +219,24 @@ different jobs and one of them would have been thrown away.
 When you do ask, do everything that does not depend on the answer first, so the
 question arrives with work already done behind it rather than instead of it.
 
+## Reporting progress
+
+Report **by topic**, not by chronology. One heading per subject, each carrying
+its own outcome — not a narration of the order things happened in.
+
+He reads the report to decide what to do next, so it has to be organised the way
+those decisions divide. A single stream of "then I did, then I did" forces him to
+sort it himself, and the one item that needs him is buried in the middle of it.
+
+Each topic states where it stands, and the distinction that matters most is
+between verified and not: what was run and passed, what was changed but not
+exercised, what is blocked. Say what you left out of that topic and why, in the
+topic — an omission mentioned at the end of a long message reads as an
+afterthought and gets skipped.
+
+Keep it as short as the content allows. Topics are for separating things that
+are genuinely separate, not a template to fill.
+
 ## Commits
 
 ### One commit per change
