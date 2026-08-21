@@ -439,6 +439,29 @@ Make only the lane transparent. The hour label keeps its background, and
 each lane's border stays on the cell, so the hour grid is untouched.
 ```
 
+### Do not skip the hooks
+
+No `--no-verify`, and no `--no-gpg-sign` or equivalent, unless he asks for it in
+that conversation. The hooks are the project's own gate — a formatter, a linter,
+a test run, a commit message check — and bypassing one commits something the
+project would have refused.
+
+This needs saying because the flag gets reached for by reflex, to avoid being
+blocked in the middle of a sequence of commits. That is exactly when it does the
+most damage: whatever the hook would have caught is now buried mid-series, and it
+resurfaces in CI or in review, where unpicking it costs far more than fixing it
+on the spot would have.
+
+When a hook fails, fix what it is complaining about. If the hook itself looks
+broken, or is failing for a reason unrelated to your change, say so and ask —
+that is a disagreement, and it follows the rule for disagreements.
+
+The same reasoning covers the rest of the family whenever the motive is to keep
+your own work moving rather than to solve the problem: skipping a test, silencing
+a linter, `--force` on anything, quieting a type checker. And if you do end up
+bypassing a gate, say that you did. A bypass he does not know about is worse than
+the failure it hid.
+
 ### No co-authorship
 
 Do not add a `Co-Authored-By` trailer, or any other attribution trailer, unless
