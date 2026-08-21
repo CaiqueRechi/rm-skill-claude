@@ -1,6 +1,6 @@
 ---
 name: rm-skill
-description: Caique's standing working conventions, valid across all of his projects — how commits are split, prefixed and written, that they are always in English, that co-authorship is never added unless he asks, and that pushing is his call and never yours. Load this skill before creating any commit, when asked "what's left to commit", when asked to split, reorder or rewrite commits, and at the start of work in any of his repositories so the conventions are known before code is written rather than after. When unsure whether it applies, read it — it is short and it prevents rework.
+description: Caique's standing working conventions, valid across all of his projects — how commits are split, prefixed and written, that they are always in English, that co-authorship is never added unless he asks, that pushing is his call and never yours, and that code comments are sparse and in English. Load this skill before creating any commit, when asked "what's left to commit", when asked to split, reorder or rewrite commits, and at the start of work in any of his repositories so the conventions are known before code is written rather than after. When unsure whether it applies, read it — it is short and it prevents rework.
 ---
 
 # Caique's working conventions
@@ -13,6 +13,42 @@ guidelines contradict them, ask instead of picking silently.
 Only what he has actually stated belongs in this skill. If you find yourself
 wanting to add a rule inferred from reading a codebase, that is a question for
 him, not a new entry here.
+
+## Code comments
+
+Write a comment only when it is genuinely necessary, and write it in **English**
+— in every project, whatever language the surrounding code, the interface or the
+conversation happens to use.
+
+The bar is high on purpose. The code already says *what* it does; a comment earns
+its place only when the *why* cannot be recovered by reading the code, and
+getting it wrong would cost someone real time. Everything else is a second thing
+to maintain that nobody updates, and a stale comment is worse than no comment
+because it is believed.
+
+Worth writing:
+
+- a constraint that lives outside the code — an API quirk, a browser bug, a
+  business or legal rule the code cannot state on its own
+- a decision where the obvious alternative is the wrong one, so the next person
+  does not helpfully "fix" it back
+- a workaround that looks removable and is not
+
+Not worth writing:
+
+- restating what the line or the block does
+- headers announcing self-evident groups of code
+- explaining language or framework features
+- docblocks that only repeat the signature
+
+Before reaching for a comment, try making the code say it instead: a clearer
+name, an extracted function, a named constant. Those cannot go stale.
+
+This overrides the usual instinct to match the comment density of the
+surrounding file. A heavily commented file is not permission to add more — write
+what is necessary and nothing beyond it, even there. Leave existing comments
+alone unless he asks: rewriting or translating them is its own job, separate
+from the change in front of you.
 
 ## Commits
 
