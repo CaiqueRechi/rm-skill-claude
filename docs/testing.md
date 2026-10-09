@@ -38,6 +38,12 @@ cumprida.
 
 ## Resultados
 
+> Regras que mudaram depois desta rodada, a partir da versão 1.1.0: a
+> documentação passou a ir sempre num commit `docs:` próprio, então o commit do
+> `annualFrom` abaixo, com o doc dentro, hoje estaria errado. E a lacuna de
+> branch, no fim deste documento, foi decidida. Os resultados continuam
+> valendo como registro do que a skill fazia na época.
+
 | | e1 com | e1 sem | e2 com | e2 sem | e3 com | e3 sem |
 | --- | --- | --- | --- | --- | --- | --- |
 | Commits | 6 | 4 | 3 | 1 | 2 | 1 |
@@ -133,6 +139,10 @@ própria (`pending-work`, `feat/job-request-priority`); os três com a skill
 commitaram na `main`. A diferença veio de omissão, não de regra — a skill não
 diz nada, e os braços com ela simplesmente não inventaram. Fica como decisão
 pendente: commitar no branch atual, ou criar um.
+
+**Decidida na 1.1.0:** toda tarefa nova nasce numa branch própria, criada a
+partir da `main`, no padrão `cm-titulo-resumido`. Ainda não foi testada por uma
+rodada como esta.
 
 ## Reproduzindo
 
